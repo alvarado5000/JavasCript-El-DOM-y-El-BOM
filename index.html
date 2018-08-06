@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <title>JavasCript El DOM y el BOM</title>
+</head>
+
+<body>
+    <div class="container">
+        <!--Seccion de Encabezado-->
+        <section>
+            <div class="row">
+                <h2>Registro de Estudiante</h2>
+            </div>
+        </section>
+
+        <!--Session de Formulario-->
+        <section>
+            <div class="row">
+                <form action="" class="col s12">
+                    <section>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="Codigo" type="text" class="validate">
+                                <label for="Codigo">Codigo</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="Nombre" type="text" class="validate">
+                                <label for="Nombre">Nombre</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">assignment</i>
+                                <input id="Nota" type="text" class="validate">
+                                <label for="Nota">Nota</label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="col s12">
+                        <div class="row">
+                            <a id="btnRegistrar" class="waves-effect waves-light btn">Registrar Estudiante</a>
+                            <a id="btnPromedio" class="waves-effect waves-light btn">Mostrar Promedio</a>
+                            <a id="btnNotaMayor" class="waves-effect waves-light btn">Mostrar Nota Mayor</a>
+                            <a id="btnNotaMenor" class="waves-effect waves-light btn">Mostrar Nota Menor</a>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="row">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Nota</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbody">
+
+                    </tbody>
+                </table>
+
+        </section>
+
+        </div>
+
+        <!--JavaScript at end of body for optimized loading-->
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+        <script>
+        var Estudiantes = [];
+
+        var btnRegistrar = document.getElementById("btnRegistrar");
+        var btnPromedio = document.getElementById("btnPromedio");
+        var btnNotaMayor = document.getElementById("btnNotaMayor");
+        var btnNotaMenor = document.getElementById("btnNotaMenor");
+
+        btnRegistrar.addEventListener("click", AgregarEstudiante);
+        btnPromedio.addEventListener("click", MostrarPromedio);
+        btnNotaMayor.addEventListener("click", MostrarNotaMayor);
+        btnNotaMenor.addEventListener("click", MostrarNotaMenor);
+
+        function AgregarEstudiante() {
+            //Validar Datos
+            var codigo = document.getElementById("Codigo").value;
+            var nombre = document.getElementById("Nombre").value;
+            var nota = document.getElementById("Nota").value;
+
+            if (codigo == "") {
+                alert("Debe especificar codigo");
+            } else {
+                if (nombre == "") {
+                    alert("Debe especificar nombre");
+                } else {
+                    if (isNaN(nota)) {
+                        alert("Formato de numero invalido");
+                    } else {
+                        var Estudiante = {
+                            "Codigo": codigo,
+                            "Nombre": nombre,
+                            "Nota": nota
+                        };
+                        Estudiantes.push(Estudiante);
+
+                        var tbody = document.getElementById("tbody");
+                        var tr = document.createElement('tr');
+                        var tdcodigo = document.createElement('td');
+                        var txtCodigo = document.createTextNode(Estudiante.Codigo);
+                        tdcodigo.appendChild(txtCodigo);
+                        var tdnombre = document.createElement('td');
+                        var txtNombre = document.createTextNode(Estudiante.Nombre);
+                        tdnombre.appendChild(txtNombre);
+                        var tdnota = document.createElement('td');
+                        var txtNota = document.createTextNode(Estudiante.Nota);
+                        tdnota.appendChild(txtNota);
+
+                        tr.appendChild(tdcodigo);
+                        tr.appendChild(tdnombre);
+                        tr.appendChild(tdnota);
+                        tbody.appendChild(tr);
+
+                    }
+                }
+            }
+        }
+
+        function MostrarPromedio() {
+          if(Estudiantes.length == 0){
+            alert("El promedio es 0");
+          }else{
+            var sumNotas = 0;
+            var totalEstudiantes = Estudiantes.length;
+
+            for(var i = 0; i<Estudiantes.length; i++){
+              sumNotas += parseFloat(Estudiantes[i].Nota);
+            }
+
+            alert("El promedio de notas es: " + sumNotas / totalEstudiantes);
+          }
+        }
+
+        function MostrarNotaMayor() {
+          var notaMayor = 0;
+
+          for(var i = 0; i < Estudiantes.length; i++){
+            if(Estudiantes[i].Nota > notaMayor){
+              notaMayor = Estudiantes[i].Nota;
+            }
+          }
+
+          alert("La nota mayor es: " + notaMayor)
+        }
+
+        function MostrarNotaMenor() {
+          var notaMenor = 0;
+
+          for(var i = 0; i < Estudiantes.length; i++){
+            if(Estudiantes[i].Nota < notaMenor){
+              notaMenor = Estudiantes[i].Nota;
+            }
+          }
+
+          alert("La nota menor es: " + notaMenor);
+        }
+        </script>
+</body>
+
+</html>
